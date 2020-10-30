@@ -1,4 +1,5 @@
 import House from '../models/House';
+import User from '../models/User';
 
 class HouseController {
 
@@ -58,9 +59,7 @@ class HouseController {
             location,
             status,
         });
-
-        return res.json(houses); 
-
+        return res.send();
     }
 }
 
