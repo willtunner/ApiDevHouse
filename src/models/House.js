@@ -10,6 +10,18 @@ const HouseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
+}, {
+    // Coloca a variavel Virtual junto com a requisição
+    toJSON: {
+        virtuals: true
+    }
 });
+
+// Cria uma url para usar posterior
+// Virtual: ele cria um campo temporario na tabela na hora da pesquisa 
+// Tem que criar um middleware em app.js para exibir a imagem
+HouseSchema.virtual('thumbnail_url').get(function(){
+    return `http://localhost:3000/files/${this.thumbnail}`; 
+})
 
 export default model('House', HouseSchema);

@@ -4,6 +4,8 @@ import express from 'express';
 import routes  from'./routes';
 // Importa a biblioteca do mongoose
 import mongoose from 'mongoose';
+// Importa o path do node
+import path from 'path';
 
 class App{
     // Primeiro método a ser chamado
@@ -24,6 +26,12 @@ class App{
     middlewares(){
         // Diz para o express entender json
         this.server.use(express.json());
+
+        //Cria um middleware em app.js que cria a rota files para exibir a imagem depois e casdastrar pelo insominia
+        this.server.use(
+            '/files',
+            express.static(path.resolve(__dirname,'..','uploads'))
+        );
     }
 
     routes(){
