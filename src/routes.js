@@ -28,6 +28,8 @@ routes.post('/houses', upload.single('thumbnail'), HouseController.store);
 routes.get('/houses', HouseController.index);
 // Cria rota para atualizar uma casa
 routes.put('/houses/:house_id', upload.single('thumbnail'), HouseController.update);
+// Cria rota para excluir
+routes.delete('/houses', HouseController.destroy);
 
 
 

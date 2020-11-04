@@ -51,7 +51,16 @@ class HouseController {
         const { description, price, location, status } = req.body;// Pega os dados enviados no formulário 
         const { user_id } = req.headers;// Pega o id do usuario logado
 
-        const houses = await House.updateOne({ _id: house_id }, {
+        const user = await User.findById(user_id);
+        const houses = await House.findById(house_id);
+
+        //user._id: pega o id do usuario logado, mostra no insominia
+        //houses.user: pega o usuario que cadastrou a casa
+        if (String(user._id) !== String(houses.user)) { // Verifica se o id do usuario logado for diferente do usuario que cadastrou a casa
+            return res.status(401).json({ error: 'Não autorizado' });
+        }
+
+        await House.updateOne({ _id: house_id }, {
             user: user_id,
             thumbnail: filename,
             description,
@@ -60,6 +69,28 @@ class HouseController {
             status,
         });
         return res.send();
+    }
+
+    // Cria a rota para excluir
+    async destroy(req, res) {
+        // Pega o id da casa que envia pelo insominia
+        const { house_id } = req.body;
+        // Pega o id do usuario logado que envia pelo headers do insominia
+        const { user_id } = req.headers;
+
+        const user = await User.findById(user_id);
+        const houses = await House.findById(house_id);
+
+        //user._id: pega o id do usuario logado, mostra no insominia
+        //houses.user: pega o usuario que cadastrou a casa
+        if (String(user._id) !== String(houses.user)) { // Verifica se o id do usuario logado for diferente do usuario que cadastrou a casa
+            return res.status(401).json({ error: 'Não autorizado' });
+        }
+
+        // Se achar a casa com o id ele delea
+        await House.findByIdAndDelete({ _id: house_id});
+
+        return res.json({ message: 'Excluida com sucesso' });
     }
 }
 
