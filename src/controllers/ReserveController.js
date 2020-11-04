@@ -5,6 +5,18 @@ import User from '../models/User';
 import House from '../models/House';
 
 class ReserveController{
+
+    async index(req, res){
+        // Pega o id do usuario logado
+        const { user_id } = req.headers;
+        
+
+        // Procura usuario do model reserva pelo id do usuario logado
+        const reserves = await Reserve.find({user: user_id});
+        // Retorna as reservas para esse usuario
+        return res.json(reserves);
+    }
+
     async store(req, res){
         // Pega o id do usurio que o insominia passa
         const { user_id } = req.headers;
