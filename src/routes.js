@@ -6,6 +6,10 @@ import SessionController from './controllers/SessionController';
 import HouseController from './controllers/HouseController';
 // Importa o DashBoard
 import DashBoardController from './controllers/DashboardController';
+// Importa o controller da reserva
+import ReserveController from './controllers/ReserveController';
+
+
 // Importa o multer
 import multer from 'multer';
 // Importa conf de upload 
@@ -32,8 +36,12 @@ routes.get('/houses', HouseController.index);
 routes.put('/houses/:house_id', upload.single('thumbnail'), HouseController.update);
 // Cria rota para excluir
 routes.delete('/houses', HouseController.destroy);
+
 // Cria a rota para o DashBoard
 routes.get('/dashboard', DashBoardController.show);
+
+// Cria a rota para reserverva
+routes.post('/houses/:house_id/reserve', ReserveController.store);
 
 
 
