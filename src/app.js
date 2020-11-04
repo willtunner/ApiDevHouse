@@ -6,6 +6,8 @@ import routes  from'./routes';
 import mongoose from 'mongoose';
 // Importa o path do node
 import path from 'path';
+// Importa o CORS
+import cors from 'cors';
 
 class App{
     // Primeiro método a ser chamado
@@ -24,6 +26,8 @@ class App{
     }
 
     middlewares(){
+        // Diz pro servidor usar o cors (limita a apenas nossa aplicação usar a api ou deixar como publica)
+        this.server.use(cors());
         // Diz para o express entender json
         this.server.use(express.json());
 
