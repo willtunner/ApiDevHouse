@@ -12,7 +12,7 @@ class ReserveController{
         
 
         // Procura usuario do model reserva pelo id do usuario logado
-        const reserves = await Reserve.find({user: user_id});
+        const reserves = await Reserve.find({user: user_id}).populate('house');
         // Retorna as reservas para esse usuario
         return res.json(reserves);
     }
@@ -61,6 +61,15 @@ class ReserveController{
         await reserve.populate('house').populate('user').execPopulate();
 
         return res.json(reserve);
+    }
+
+    async destroy(req, res){
+        // Pega o id da reserva
+        const { reserve_id } = req.body;
+        // Deleta a reserva pelo id acima
+        await Reserve.findByIdAndDelete({_id: reserve_id});
+
+        return res.send();
     }
 }
 

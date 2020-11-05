@@ -4,6 +4,7 @@
 ## yarn add mongoose
 ## yarn add multer
 ## yarn add cors
+## yarn add yup
 
 
 ## Executar: yarm dev
