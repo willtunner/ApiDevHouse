@@ -8,15 +8,24 @@
  */
 
  import User from '../models/User';
+ import * as Yup from 'yup';
 
 
 class SessionController{
    async store(req, res){
+       const schema = Yup.object().shape({
+        email: Yup.string().email().required(),
+       });
 
         //const email = req.body.email;
 
         // Descontrução do javascript ecs6
         const {email} = req.body;
+
+        // Validação do Yup
+        if(!( await schema.isValid(req.body))){
+            return res.status(400).json({error: 'Falha na validação'});
+        }
 
         // Se o nome do campo enviado pelo insominia fosse diferente do usado no model
         // teria que usar dessa forma

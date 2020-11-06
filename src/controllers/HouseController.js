@@ -1,5 +1,6 @@
 import House from '../models/House';
 import User from '../models/User';
+import * as Yup from 'yup';
 
 class HouseController {
 
@@ -25,12 +26,25 @@ class HouseController {
         console.log(req.file);
         */
 
+        // Configura o Yup para fazer as validações certas
+        const schema = Yup.object().shape({
+            description: Yup.string().required(),
+            price: Yup.number().required(),
+            location: Yup.string().required(),
+            status: Yup.boolean().required(),
+        });
+
         // Pega o arquivo enviado
         const { filename } = req.file;
         // Pega os dados enviados no formulário 
         const { description, price, location, status } = req.body;
         // Pega o id do usuario logado
         const { user_id } = req.headers;
+
+        // Faz a validação casp não esteja dentro doa padrões 
+        if(!(await schema.isValid(req.body))){
+            return res.status(400).json({ error: "Falha na validação."});
+        }
 
         const houses = await House.create({
             user: user_id,
@@ -51,13 +65,26 @@ class HouseController {
         const { description, price, location, status } = req.body;// Pega os dados enviados no formulário 
         const { user_id } = req.headers;// Pega o id do usuario logado
 
+         // Configura o Yup para fazer as validações certas
+         const schema = Yup.object().shape({
+            description: Yup.string().required(),
+            price: Yup.number().required(),
+            location: Yup.string().required(),
+            status: Yup.boolean().required(),
+        });
+
         const user = await User.findById(user_id);
         const houses = await House.findById(house_id);
 
         //user._id: pega o id do usuario logado, mostra no insominia
         //houses.user: pega o usuario que cadastrou a casa
         if (String(user._id) !== String(houses.user)) { // Verifica se o id do usuario logado for diferente do usuario que cadastrou a casa
-            return res.status(401).json({ error: 'Não autorizado' });
+            return res.status(401).json({ error: 'Usuario diferente do usuario que cadastrou a casa.' });
+        }
+
+         // Faz a validação casp não esteja dentro doa padrões 
+         if(!(await schema.isValid(req.body))){
+            return res.status(400).json({ error: "Campos inválidos"});
         }
 
         await House.updateOne({ _id: house_id }, {
