@@ -1,3 +1,7 @@
+# API HomeDev
+### Banco de dados: MongoDB
+### Api para cadastro/reservas de casa
+
 ## yarn init
 ## yarn add express
 ## yarn add sucrase nodemon -D
